@@ -8,36 +8,33 @@ Habilitar en el portal de Azure un recurso Event Hub para envio de mensajes medi
  <img alt="" src="https://user-images.githubusercontent.com/25423296/163456779-a8556205-d0a5-45e2-ac17-42d089e3c3f8.png">
 </picture>
 
-## Objetivos cel curos:
+## Objetivo del curso:
 <details>
 <summary>Indice</summary>
 
 | # | Tema |
 |-----:|-----------|
 |     1| Crear un projecto Maven|
-|     2| Crear un recurso Event Hub desde portal de Azure |
+|     2| Crear un recurso Event en Azure |
 |     3| Conectarse desde java al Event Hub y producir un mensaje |
 
 </details>
 
 ## 1.- Crear un projecto Maven
 
-```mkdir java-azure-test
+Dentro de la linea de comando de su ordenador 
+```
+mkdir java-azure-test
 cd java-azure-test
 mvn archetype:generate -DgroupId=mx.com.easyit4u -DartifactId=AzureSDKEventHubApp \
 -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+
 ```
 
 
+### 1.2.- Crear un recurso Event en Azure
 
-echo "Using resource group $resourceGroup with login: $login, password: $password..."
 
-### 1.2.- Especificar un valor de IP valido(Wich is my IP) para limitar el acceso al servidor PostgreSQL
-
-startIp=x.x.x.x
-endIp=x.x.x.y 
-
-Nota cambiar los valoes x.x.x.x, por los valores que corresponda con tu ambiente
 
 ### 1.3.- Crear un grupo de cursos 
 
