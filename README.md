@@ -16,7 +16,7 @@ Habilitar en el portal de Azure un recurso Event Hub para envio de mensajes medi
 |-----:|-----------|
 |     1| Crear un projecto Maven|
 |     2| Crear un recurso Event en Azure |
-|     3| Conectarse desde java al Event Hub y producir un mensaje |
+|     3| Conección mensaje a Event Hub  |
 
 </details>
 
@@ -44,147 +44,84 @@ Dentro del proyecto Maven agregar la siguiente dependencia en el archivo pom.xml
 ```
 
 ## 2.- Crear un recurso Event en Azure
+
 Dentro del portal de Azure buscar Event Hub y crear un recurso de la siguiente manera
 
  <img alt="" src="https://github.com/easyIT4u/azure-eventHub-SendEvents-001/blob/main/img/azure-eventhub-send-001.png">
 
-### 1.3.- Crear un grupo de cursos 
-
-Comando:
-echo "Creating $resourceGroup in $location..."
-az group create --name $resourceGroup --location "$location" --tags $tag
+### 2.1.- Obtener cadena de conexión 
+Dentro del espacio del event hub generado, se debe ingresar a las Directivas de acceso compartido(**Shared Access Policies**) en las directivas se debera seleccionar la policita **RootManageSharedAccessKey**, lo que hablitar la ventana de la directiva, copiar la Cadena de conexión principal
 
 
-### 1.4.- Crear un servidor PostgreSQL en el grupo de recursos
-# El nombre de un servidor se asigna al nombre DNS y, por lo tanto, debe ser globalmente único en Azure.
-
-Comando:
-echo "Creating $server in $location..."
-az postgres server create --name $server --resource-group $resourceGroup --location "$location" --admin-user $login --admin-password $password --sku-name $sku
-
-### 1.5.- Configurar una regla en el servidor firewall  
-
-Comando:
-echo "Configuring a firewall rule for $server for the IP address range of $startIp to $endIp"
-az postgres server firewall-rule create --resource-group $resourceGroup --server $server --name AllowIps --start-ip-address $startIp --end-ip-address $endIp
+ <img alt="" src="https://github.com/easyIT4u/azure-eventHub-SendEvents-001/blob/main/img/azure-eventhub-send-002.png">
 
 
-### 1.6.- Listar las reglas en el servidor firewall 
+## 3.- Conección mensaje a Event Hub 
 
-Comando:
-echo "List of server-based firewall rules for $server"
-az postgres server firewall-rule list --resource-group $resourceGroup --server-name $server
-# You may use the switch `--output table` for a more readable table format as the output.
-
-### 1.7.- Detener el uso SSL y Activar acceso a recursos de Azure
-
-Dentro del portal de azure en la la congiguraciones de seguridad de la base datos tener el uso de SSL y activar el acceso a recursos de Azure
-
-> [!IMPORTANT]
-> Para fines practicos de este curso se elimina el uso del SSL, pero bajo ninguna circustancia  se recomienda que ningun entorno previo o productivo carazca de esta propiedad.
-
-
-## 2.- Get the connection information
-
-Comando:
-az postgres server show --resource-group $resourceGroup --name $server
-
-Ejemplo:
-```
-{
-  "administratorLogin": "azureuser",
-  "byokEnforcement": "Disabled",
-  "earliestRestoreDate": "2024-02-03T15:59:51.867000+00:00",
-  "fullyQualifiedDomainName": "msdocs-postgresql-server-84763490.postgres.database.azure.com",
-  "id": "/subscriptions/0641a35d-f3bd-48d1-afab-4b5a00ad9d31/resourceGroups/msdocs-postgresql-rg-84763490/providers/Microsoft.DBforPostgreSQL/servers/msdocs-postgresql-server-84763490",
-  "identity": null,
-  "infrastructureEncryption": "Disabled",
-  "location": "eastus",
-  "masterServerId": "",
-  "minimalTlsVersion": "TLSEnforcementDisabled",
-  "name": "msdocs-postgresql-server-84763490",
-  "privateEndpointConnections": [],
-  "publicNetworkAccess": "Enabled",
-  "replicaCapacity": 5,
-  "replicationRole": "None",
-  "resourceGroup": "msdocs-postgresql-rg-84763490",
-  "sku": {
-    "capacity": 2,
-    "family": "Gen5",
-    "name": "GP_Gen5_2",
-    "size": null,
-    "tier": "GeneralPurpose"
-  },
-  "sslEnforcement": "Enabled",
-  "storageProfile": {
-    "backupRetentionDays": 7,
-    "geoRedundantBackup": "Disabled",
-    "storageAutogrow": "Enabled",
-    "storageMb": 5120
-  },
-  "tags": null,
-  "type": "Microsoft.DBforPostgreSQL/servers",
-  "userVisibleState": "Ready",
-  "version": "11"
-}
-
-```
-
-### 2.1.- Conectar a la Base de Datos PostgreSQL usando psql
-
-Commando:
-psql --host=msdocs-postgresql-server-84763490.postgres.database.azure.com --port=5432 --username=azureuser@msdocs-postgresql-server-84763490 --dbname=postgres  -v sslmode=true
-
+Dentro del proyecto maven geerado previamente se debe crear un clase Sender que contega el siguiene código
 > [!TIP]
-> Colocar el password de la base datos con el valor del variable $password
+> Actualizar <Event Hubs namespace connection string> con la cadena de conexión en el espacio de nombres de Event Hubs.
+> Actualizar <Event hub name> con el nombre del centro de eventos en el espacio de nombres.
 
+```
+import com.azure.messaging.eventhubs.*;
+import java.util.Arrays;
+import java.util.List;
 
-### 2.1.- Crear una  Base de Datos, tablas, insertar registro en PostgreSQL usando sql
+public class Sender {
+    private static final String connectionString = "<Event Hubs namespace connection string>";
+    private static final String eventHubName = "<Event hub name>";
 
-2.2.2.- Crear una base de datos
+    public static void main(String[] args) {
+        publishEvents();
+    }
+}
 ```
-  CREATE DATABASE mypgsqldb;
-```  
-Para conectarse a la base de datos recien creada
-```
-  \c mypgsqldb
-```
+Posterior se debe crear el metodo publishEvent
 
-2.2.3.- Crear una tabla
 ```
-  CREATE TABLE inventory (
-    id serial PRIMARY KEY, 
-    name VARCHAR(50), 
-    quantity INTEGER
-  );
-```
-Conectarse a la tabla recien creada
-```
-  \dt
-```
+    /**
+     * Code sample for publishing events.
+     * @throws IllegalArgumentException if the EventData is bigger than the max batch size.
+     */
+    public static void publishEvents() {
+        // create a producer client
+        EventHubProducerClient producer = new EventHubClientBuilder()
+            .connectionString(connectionString, eventHubName)
+            .buildProducerClient();
 
-INSERT INTO inventory (id, name, quantity) VALUES (1, 'banana', 150); 
-INSERT INTO inventory (id, name, quantity) VALUES (2, 'orange', 154);
+        // sample events in an array
+        List<EventData> allEvents = Arrays.asList(new EventData("Foo"), new EventData("Bar"));
 
+        // create a batch
+        EventDataBatch eventDataBatch = producer.createBatch();
 
+        for (EventData eventData : allEvents) {
+            // try to add the event from the array to the batch
+            if (!eventDataBatch.tryAdd(eventData)) {
+                // if the batch is full, send it and then create a new batch
+                producer.send(eventDataBatch);
+                eventDataBatch = producer.createBatch();
 
-### Eliminar recursos
-Al concluir se deben eliminar todos los servicios generados para no incurrir en un costo por uso
-
-Eliminar base de datos
+                // Try to add that event that couldn't fit before.
+                if (!eventDataBatch.tryAdd(eventData)) {
+                    throw new IllegalArgumentException("Event is too large for an empty batch. Max size: "
+                        + eventDataBatch.getMaxSizeInBytes());
+                }
+            }
+        }
+        // send the last batch of remaining events
+        if (eventDataBatch.getCount() > 0) {
+            producer.send(eventDataBatch);
+        }
+        producer.close();
+    }
+    
 ```
-az postgres down --delete-group
-```
-
-Eliminar gruop de recursos
-```
-az group delete --name $resourceGroup
-```
-
 
 ---
 > Curso basado en documentación Azure
-> https://learn.microsoft.com/en-us/azure/postgresql/single-server/tutorial-design-database-using-azure-cli
+> https://learn.microsoft.com/es-es/azure/event-hubs/event-hubs-java-get-started-send?tabs=connection-string%2Croles-azure-portal
 
 — easyIT4y Learninng - 2024
 
