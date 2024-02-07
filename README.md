@@ -37,15 +37,16 @@ Dentro del proyecto Maven agregar la siguiente dependencia en el archivo pom.xml
 
 ```
 <dependency>
-		    <groupId>com.azure</groupId>
-		    <artifactId>azure-messaging-eventhubs</artifactId>
-		    <version>5.15.0</version>
-		</dependency>
+	<groupId>com.azure</groupId>
+	<artifactId>azure-messaging-eventhubs</artifactId>
+	<version>5.15.0</version>
+</dependency>
 ```
 
 ## 2.- Crear un recurso Event en Azure
+Dentro del portal de Azure buscar Event Hub y crear un recurso de la siguiente manera
 
-https://github.com/easyIT4u/azure-eventHub-SendEvents-001/blob/main/img/azure-eventhub-send-001.png
+ <img alt="" src="https://github.com/easyIT4u/azure-eventHub-SendEvents-001/blob/main/img/azure-eventhub-send-001.png">
 
 ### 1.3.- Crear un grupo de cursos 
 
