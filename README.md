@@ -118,10 +118,11 @@ Posterior se debe crear el metodo publishEvent
     }
     
 ```
+Finalmente se debera compilar y ejecutar el proyecto Maven
 
 ---
-> Curso basado en documentación Azure
+> Curso basado en documentación Azure:
 > https://learn.microsoft.com/es-es/azure/event-hubs/event-hubs-java-get-started-send?tabs=connection-string%2Croles-azure-portal
 
-— easyIT4y Learninng - 2024
+— easyIT4y Learning - 2024
 
