@@ -31,8 +31,19 @@ mvn archetype:generate -DgroupId=mx.com.easyit4u -DartifactId=AzureSDKEventHubAp
 
 ```
 
+### 1.2.- Agregar dependecias al projecto
 
-### 1.2.- Crear un recurso Event en Azure
+Dentro del proyecto Maven agregar la siguiente dependencia en el archivo pom.xml
+
+```
+<dependency>
+		    <groupId>com.azure</groupId>
+		    <artifactId>azure-messaging-eventhubs</artifactId>
+		    <version>5.15.0</version>
+		</dependency>
+```
+
+## 2.- Crear un recurso Event en Azure
 
 https://github.com/easyIT4u/azure-eventHub-SendEvents-001/blob/main/img/azure-eventhub-send-001.png
 
