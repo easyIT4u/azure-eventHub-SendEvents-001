@@ -34,7 +34,7 @@ mvn archetype:generate -DgroupId=mx.com.easyit4u -DartifactId=AzureSDKEventHubAp
 
 ### 1.2.- Crear un recurso Event en Azure
 
-
+https://github.com/easyIT4u/azure-eventHub-SendEvents-001/blob/main/img/azure-eventhub-send-001.png
 
 ### 1.3.- Crear un grupo de cursos 
 
