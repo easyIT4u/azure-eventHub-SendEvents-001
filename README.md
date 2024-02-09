@@ -17,6 +17,8 @@ Habilitar en el portal de Azure un recurso Event Hub para envio de mensajes medi
 |     1| Crear un projecto Maven|
 |     2| Crear un recurso Event en Azure |
 |     3| Conección mensaje a Event Hub  |
+|     4| Ejecutar aplicación |
+
 
 </details>
 
@@ -118,8 +120,11 @@ Posterior se debe crear el metodo publishEvent
     }
     
 ```
-Finalmente se debera compilar y ejecutar el proyecto Maven
+## 4.- Ejecutar aplicación
 
+```
+mvn clean compile exec:java
+```
 ---
 > Curso basado en documentación Azure:
 > https://learn.microsoft.com/es-es/azure/event-hubs/event-hubs-java-get-started-send?tabs=connection-string%2Croles-azure-portal
