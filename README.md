@@ -54,13 +54,15 @@ Dentro del portal de Azure buscar Event Hub y crear un recurso de la siguiente m
 ### 2.1.-
 Crear un topico dentro del Event Hub
 
-<img alt="" src="https://github.com/easyIT4u/azure-eventHub-SendEvents-002/blob/main/img/azure-eventhub-send-002.png">
+<img alt="" src="https://github.com/easyIT4u/azure-eventHub-SendEvents-001/blob/main/img/azure-eventhub-send-002.png">
+
+<img alt="" src="https://github.com/easyIT4u/azure-eventHub-SendEvents-001/blob/main/img/azure-eventhub-send-003.png">
 
 ### 2.2.- Obtener cadena de conexión 
 Dentro del espacio del event hub generado, se debe ingresar a las Directivas de acceso compartido(**Shared Access Policies**) en las directivas se debera seleccionar la policita **RootManageSharedAccessKey**, lo que hablitar la ventana de la directiva, copiar la Cadena de conexión principal
 
 
- <img alt="" src="https://github.com/easyIT4u/azure-eventHub-SendEvents-003/blob/main/img/azure-eventhub-send-003.png">
+ <img alt="" src="https://github.com/easyIT4u/azure-eventHub-SendEvents-001/blob/main/img/azure-eventhub-send-004.png">
 
 
 ## 3.- Conección mensaje a Event Hub 
